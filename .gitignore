@@ -1,0 +1,6 @@
+# Project exclude paths
+.vscode
+/node_modules/
+/.env
+/.idea/
+*.iml

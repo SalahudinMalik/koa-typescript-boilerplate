@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Koa API",
+    "description": "Koa API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:9229"
+    }
+  ],
+  "tags": [],
+  "paths": {
+
+  },
+  "components": {
+    "schemas": {
+
+    },
+    "securitySchemes": {
+
+    }
+  }
+}

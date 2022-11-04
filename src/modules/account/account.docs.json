@@ -1,0 +1,323 @@
+{
+   "openapi":"3.0.3",
+   "info":{
+      "title":"",
+      "description":"",
+      "version":"1.0.0"
+   },
+   "servers":[
+      {
+         "url":"http://localhost:9229/api"
+      }
+   ],
+   "tags":[
+      {
+         "name":"Account",
+         "description":"Companies can have multiple users. Users can have different types of roles inside an organization and are uniquely identified by email address. Same email address cannot be used to create multiple accounts"
+      }
+   ],
+   "paths":{
+      "/account":{
+         "parameters":[
+            {
+               "name":"title",
+               "in":"query",
+               "description":"Supported values are ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr']",
+               "example":"Mr",
+               "required":false,
+               "schema":{
+                  "type":"string",
+                  "default":"Mr"
+               }
+            },
+            {
+               "name":"firstName",
+               "in":"query",
+               "description":"User First Name",
+               "required":true,
+               "schema":{
+                  "type":"string"
+               }
+            },
+            {
+               "name":"lastName",
+               "in":"query",
+               "description":"User Last Name",
+               "required":true,
+               "schema":{
+                  "type":"string"
+               }
+            },
+            {
+               "name":"email",
+               "in":"query",
+               "description":"User Email",
+               "required":false,
+               "schema":{
+                  "type":"string"
+               }
+            },
+            {
+               "name":"accountType",
+               "in":"query",
+               "description":"User account type . Supported values are [0, 1, 2, 3, 4].",
+               "required":false,
+               "schema":{
+                  "type":"number",
+                  "default":0
+               }
+            },
+            {
+               "name":"accountGroupId",
+               "in":"query",
+               "description":"User account group ID.",
+               "required":true,
+               "schema":{
+                  "type":"number"
+               }
+            },
+            {
+               "name":"hasGoogleDocs",
+               "in":"query",
+               "description":"User has google docs or not.",
+               "required":false,
+               "schema":{
+                  "type":"boolean",
+                  "default":false
+               }
+            }
+         ],
+         "post":{
+            "tags":[
+               "Account"
+            ],
+            "summary":"Create new account",
+            "description":"Create new account.",
+            "operationId":"addAccount",
+            "requestBody":{
+               "description":"Add new account",
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/Accounts"
+                     }
+                  },
+                  "application/xml":{
+                     "schema":{
+                        "$ref":"#/components/schemas/Accounts"
+                     }
+                  }
+               },
+               "required":true
+            },
+            "responses":{
+               "200":{
+                  "description":"Successful operation",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "$ref":"#/components/schemas/Accounts"
+                        }
+                     },
+                     "application/xml":{
+                        "schema":{
+                           "$ref":"#/components/schemas/Accounts"
+                        }
+                     }
+                  }
+               },
+               "400":{
+                  "description":"Invalid input"
+               }
+            },
+            "security":[
+               {
+                  "account_auth":[
+                     "write:Account",
+                     "read:Account"
+                  ]
+               }
+            ]
+         }
+      },
+      "/account":{
+         "get":{
+            "tags":[
+               "Account"
+            ],
+            "summary":"Get account by ID",
+            "description":"Returns a single account",
+            "operationId":"getAccountById",
+            "parameters":[
+               {
+                  "name":"accountType",
+                  "in":"query",
+                  "description":"ID (Type of Account)",
+                  "required":true,
+                  "schema":{
+                     "type":"integer",
+                     "format":"integer"
+                  }
+               },
+               {
+                  "name":"companyId",
+                  "in":"query",
+                  "description":"Company ID.",
+                  "required":true,
+                  "schema":{
+                     "type":"integer"
+                  }
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"successful operation",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "type":"object",
+                           "properties":{
+                               "accounts":{
+                                 "type":"object",
+                                 "format":"array",
+                                 "example":[{ "live_jobs": 0,
+                               "account_type": 0,
+                               "title": "Mr",
+                               "first_name": "Jhon",
+                               "last_name": "Doe",
+                               "email": "jhondoe@mgmail.com",
+                               "password": "$2a$10$9LJJq.wDfVv6wIWXCSf7HeGwUon7Btfd9JHpiiUZqyZWV14ZkTrqW",
+                               "password_reset": 0,
+                               "phone": null,
+                               "mobile": null,
+                               "status_id": 2,
+                               "created_at": "2022-08-08T11:24:57.000Z",
+                               "updated_at": "2022-08-25T08:22:08.000Z",
+                               "id": 1234,
+                               "status_id_friendly": "LIVE"}]
+                               },
+                               "totalCount":{
+                                 "type":"number",
+                                 "format":"integer",
+                                 "example":1
+                               },
+                                "perPage":{
+                                 "type":"number",
+                                 "format":"integer",
+                                 "example":20
+                               },
+                                "currentPage":{
+                                 "type":"number",
+                                 "format":"integer",
+                                 "example":1
+                               }
+                           }
+                        }
+                     },
+                     "application/xml":{
+                        "schema":{
+                           "$ref":"#/components/schemas/AccountFind"
+                        }
+                     }
+                  }
+               },
+               "400":{
+                  "description":"Invalid Company ID supplied or Invalid Account ID supplied"
+               },
+               "404":{
+                  "description":"Not found"
+               },
+               "500":{
+                  "description":"Internal Server Error"
+               },
+               "503":{
+                  "description":"Service Unavailable"
+               },
+               "401":{
+                  "description":"Unauthorized"
+               }
+            },
+            "security":[
+               {
+                  "account_auth":[
+                     "write:Account",
+                     "read:Account"
+                  ]
+               }
+            ]
+         }
+      }
+   },
+   "components":{
+      "schemas":{
+         "Accounts":{
+            "type":"object",
+            "properties":{
+               "title":{
+                  "type":"string",
+                  "format":"string",
+                  "example":"Mr"
+               },
+               "firstName":{
+                  "type":"string",
+                  "format":"string",
+                  "example":"Jhon"
+               },
+               "lastName":{
+                  "type":"string",
+                  "format":"string",
+                  "example":"Doe"
+               },
+               "email":{
+                  "type":"string",
+                  "format":"email",
+                  "example":"jhondoe@gmail.com"
+               },
+               "accountType":{
+                  "type":"number",
+                  "format":"integer",
+                  "example":1
+               },
+               "accountGroupId":{
+                  "type":"number",
+                  "format":"integer",
+                  "example":1
+               },
+               "hasGoogleDocs":{
+                  "type":"boolean",
+                  "format":"boolean",
+                  "example":true
+               }
+            },
+            "xml":{
+               "name":"Accounts"
+            }
+         },
+         "AccountFind":{
+            "type":"object",
+            "properties":{
+               "accountType":{
+                  "type":"number",
+                  "format":"integer",
+                  "example":1
+               },
+               "companyId":{
+                  "type":"number",
+                  "format":"integer",
+                  "example":1
+               }
+            },
+            "xml":{
+               "name":"AccountFind"
+            }
+         }
+      },
+      "securitySchemes":{
+         "account_auth":{
+            "type":"http",
+            "scheme":"bearer",
+            "bearerFormat":"JWT"
+         }
+      }
+   }
+ }
