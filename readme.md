@@ -38,6 +38,10 @@ This project contains the following features:
  - Write Tests
  - Add Login Module and Signup Module
  - Add swagger docs
+ - Add Dockerfile
+ - Add CI/CD
+ - Add Redis
+ - Add Authentication
 
 ### Contributing
 
